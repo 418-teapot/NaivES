@@ -4,6 +4,7 @@
 #include <cstdint>
 
 namespace cpu {
+
 class RegFile {
  private:
   uint16_t pc_reg;
@@ -12,6 +13,14 @@ class RegFile {
   uint8_t x_reg;
   uint8_t y_reg;
   uint8_t p_reg;
+ public:
+  void ClearC();
+  void ClearD();
+  void ClearI();
+  void ClearV();
+  void SetC();
+  void SetD();
+  void SetI();
 };
 }; // namespace cpu
 
