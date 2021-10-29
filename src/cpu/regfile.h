@@ -13,15 +13,17 @@ class RegFile {
   uint8_t x_reg;
   uint8_t y_reg;
   uint8_t p_reg;
+  friend class ALU;
  public:
-  void ClearC();
-  void ClearD();
-  void ClearI();
-  void ClearV();
-  void SetC();
-  void SetD();
-  void SetI();
+  void reset() {
+    pc_reg = 0;
+    sp_reg = 0;
+    x_reg = 0;
+    y_reg = 0;
+    p_reg = 0;
+  };
 };
+
 }; // namespace cpu
 
 #endif // CPU_REGFILE_H_
