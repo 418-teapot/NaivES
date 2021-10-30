@@ -11,7 +11,7 @@ namespace cpu {
 class ALU {
  private:
   RegFile regfile;
-  Mem mem;
+  mem::Mem mem;
  public:
   void ClearC();
   void ClearZ();

@@ -11,8 +11,14 @@ class Mem {
  private:
   uint8_t ram[RAM_SIZE];
  public:
-  void Mem();
-  void reset();
+  Mem();
+
+  void reset() {
+    for (int i = 0; i < RAM_SIZE; ++i) {
+      ram[i] = 0;
+    };
+  }
+
   void read(uint16_t ram_addr, uint8_t OUT &ram_data);
   void write(uint16_t ram_addr, uint8_t IN &ram_data);
 };
