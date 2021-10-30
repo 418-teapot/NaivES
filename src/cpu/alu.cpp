@@ -58,6 +58,34 @@ void ALU::SetN() {
   regfile.p_reg |= 0x80;
 }
 
+uint8_t ALU::ReadC() {
+  return regfile.p_reg & 0x01;
+}
+
+uint8_t ALU::ReadZ() {
+  return (regfile.p_reg >> 1) & 0x01;
+}
+
+uint8_t ALU::ReadI() {
+  return (regfile.p_reg >> 2) & 0x01;
+}
+
+uint8_t ALU::ReadD() {
+  return (regfile.p_reg >> 3) & 0x01;
+}
+
+uint8_t ALU::ReadB() {
+  return (regfile.p_reg >> 4) & 0x01;
+}
+
+uint8_t ALU::ReadV() {
+  return (regfile.p_reg >> 6) & 0x01;
+}
+
+uint8_t ALU::ReadN() {
+  return (regfile.p_reg >> 7) & 0x01;
+}
+
 void ALU::UpdateNZ(uint8_t value) {
   if (!value) SetZ();
   else ClearZ();
@@ -112,6 +140,22 @@ void ALU::Tsx() {
 
 void ALU::Txs() {
   regfile.sp_reg = regfile.x_reg;
+}
+
+void ALU::Pha() {
+  mem.write(regfile.sp_reg--, regfile.a_reg);
+}
+
+void ALU::Php() {
+  mem.write(regfile.sp_reg--, regfile.p_reg);
+}
+
+void ALU::Pla() {
+  mem.read(++regfile.sp_reg, regfile.a_reg);
+}
+
+void ALU::Plp() {
+  mem.read(++regfile.sp_reg, regfile.p_reg);
 }
 
 }
