@@ -53,4 +53,4 @@ class ALU {
 
 }; // namespace cpu
 
-#endif // CPU_ALU_H
+#endif // CPU_ALU_H_

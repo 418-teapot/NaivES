@@ -106,7 +106,7 @@ enum class OpOthers {
 
 enum class AddrModeOthers {
   ZERO_PAGE = 0x04, // only BIT
-  ABSOLUTE = 0x0C, // JSR's absolute is 0x00
+  ABSOLUTE = 0x0C, // JSR absolute is 0x00
   INDIRECT = 0x2C // only JMP
 };
 

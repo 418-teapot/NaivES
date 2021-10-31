@@ -158,4 +158,4 @@ void ALU::Plp() {
   mem.read(++regfile.sp_reg, regfile.p_reg);
 }
 
-}
+} // namespace cpu
