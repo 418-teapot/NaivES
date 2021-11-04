@@ -1,6 +1,8 @@
 #ifndef CPU_ALU_H_
 #define CPU_ALU_H_
 
+#define READ_BIT(value, n) ((value >> n) & 0x1)
+
 #include "cpu/regfile.h"
 #include "define/type.h"
 #include "mem/mem.h"
@@ -49,6 +51,9 @@ class ALU {
   void Php();
   void Pla();
   void Plp();
+  void Adder(uint8_t IN OUT &opnd1, uint8_t IN opnd2,
+      uint8_t IN cin, uint8_t OUT &cout);
+  void Adc(Imme oper);
 };
 
 }; // namespace cpu

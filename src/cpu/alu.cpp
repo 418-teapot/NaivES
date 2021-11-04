@@ -59,31 +59,31 @@ void ALU::SetN() {
 }
 
 uint8_t ALU::ReadC() {
-  return regfile.p_reg & 0x01;
+  return READ_BIT(regfile.p_reg, 0);
 }
 
 uint8_t ALU::ReadZ() {
-  return (regfile.p_reg >> 1) & 0x01;
+  return READ_BIT(regfile.p_reg, 1);
 }
 
 uint8_t ALU::ReadI() {
-  return (regfile.p_reg >> 2) & 0x01;
+  return READ_BIT(regfile.p_reg, 2);
 }
 
 uint8_t ALU::ReadD() {
-  return (regfile.p_reg >> 3) & 0x01;
+  return READ_BIT(regfile.p_reg, 3);
 }
 
 uint8_t ALU::ReadB() {
-  return (regfile.p_reg >> 4) & 0x01;
+  return READ_BIT(regfile.p_reg, 4);
 }
 
 uint8_t ALU::ReadV() {
-  return (regfile.p_reg >> 6) & 0x01;
+  return READ_BIT(regfile.p_reg, 6);
 }
 
 uint8_t ALU::ReadN() {
-  return (regfile.p_reg >> 7) & 0x01;
+  return READ_BIT(regfile.p_reg, 7);
 }
 
 void ALU::UpdateNZ(uint8_t value) {
@@ -156,6 +156,39 @@ void ALU::Pla() {
 
 void ALU::Plp() {
   mem.read(++regfile.sp_reg, regfile.p_reg);
+}
+
+void ALU::Adder(uint8_t IN OUT &opnd1, uint8_t IN opnd2,
+    uint8_t IN cin, uint8_t OUT &cout) {
+  // TODO:
+  // uint8_t c0 = cin;
+  // uint8_t p = opnd1 ^ opnd2;
+  // uint8_t g = opnd1 & opnd2;
+  // uint8_t p0 = READ_BIT(p, 0);
+  // uint8_t g0 = READ_BIT(g, 0);
+  // uint8_t p1 = READ_BIT(p, 1);
+  // uint8_t g1 = READ_BIT(g, 1);
+  // uint8_t p2 = READ_BIT(p, 2);
+  // uint8_t g2 = READ_BIT(g, 2);
+  // uint8_t p3 = READ_BIT(p, 3);
+  // uint8_t g3 = READ_BIT(g, 3);
+  // uint8_t p4 = READ_BIT(p, 4);
+  // uint8_t g4 = READ_BIT(g, 4);
+  // uint8_t p5 = READ_BIT(p, 5);
+  // uint8_t g5 = READ_BIT(g, 5);
+  // uint8_t p6 = READ_BIT(p, 6);
+  // uint8_t g6 = READ_BIT(g, 6);
+  // uint8_t p7 = READ_BIT(p, 7);
+  // uint8_t g7 = READ_BIT(g, 7);
+}
+
+void ALU::Adc(Imme oper) {
+  regfile.pc_reg += 2;
+  uint8_t cout = 0;
+  Adder(regfile.a_reg, oper, ReadC(), cout);
+  if (cout) SetC();
+  else ClearC();
+  UpdateNZ(regfile.a_reg);
 }
 
 } // namespace cpu
