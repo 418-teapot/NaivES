@@ -160,35 +160,85 @@ void ALU::Plp() {
 
 void ALU::Adder(uint8_t IN OUT &opnd1, uint8_t IN opnd2,
     uint8_t IN cin, uint8_t OUT &cout) {
-  // TODO:
-  // uint8_t c0 = cin;
-  // uint8_t p = opnd1 ^ opnd2;
-  // uint8_t g = opnd1 & opnd2;
-  // uint8_t p0 = READ_BIT(p, 0);
-  // uint8_t g0 = READ_BIT(g, 0);
-  // uint8_t p1 = READ_BIT(p, 1);
-  // uint8_t g1 = READ_BIT(g, 1);
-  // uint8_t p2 = READ_BIT(p, 2);
-  // uint8_t g2 = READ_BIT(g, 2);
-  // uint8_t p3 = READ_BIT(p, 3);
-  // uint8_t g3 = READ_BIT(g, 3);
-  // uint8_t p4 = READ_BIT(p, 4);
-  // uint8_t g4 = READ_BIT(g, 4);
-  // uint8_t p5 = READ_BIT(p, 5);
-  // uint8_t g5 = READ_BIT(g, 5);
-  // uint8_t p6 = READ_BIT(p, 6);
-  // uint8_t g6 = READ_BIT(g, 6);
-  // uint8_t p7 = READ_BIT(p, 7);
-  // uint8_t g7 = READ_BIT(g, 7);
+  uint16_t sum = opnd1 + opnd2 + cin;
+  cout = READ_BIT(sum, 8);
+  opnd1 = sum & 0xFF;
 }
 
-void ALU::Adc(Imme oper) {
+void ALU::Adc(Imme IN opnd) {
   regfile.pc_reg += 2;
   uint8_t cout = 0;
-  Adder(regfile.a_reg, oper, ReadC(), cout);
+  Adder(regfile.a_reg, opnd, ReadC(), cout);
   if (cout) SetC();
   else ClearC();
   UpdateNZ(regfile.a_reg);
+}
+
+void ALU::Sbc(Imme IN opnd) {
+  regfile.pc_reg += 2;
+  uint8_t cout = 0;
+  Adder(regfile.a_reg, -opnd, -ReadC(), cout);
+  if (cout) SetC();
+  else ClearC();
+  UpdateNZ(regfile.a_reg);
+}
+
+void ALU::And(Imme IN opnd) {
+  regfile.pc_reg += 2;
+  regfile.a_reg &= opnd;
+  UpdateNZ(regfile.a_reg);
+}
+
+void ALU::Eor(Imme IN opnd) {
+  regfile.pc_reg += 2;
+  regfile.a_reg ^= opnd;
+  UpdateNZ(regfile.a_reg);
+}
+
+void ALU::Ora(Imme IN opnd) {
+  regfile.pc_reg += 2;
+  regfile.a_reg |= opnd;
+  UpdateNZ(regfile.a_reg);
+}
+
+void ALU::CmpFactory(uint8_t IN opnd1, Imme IN opnd2) {
+  regfile.pc_reg += 2;
+  uint8_t cout = 0;
+  uint8_t tmp = opnd1;
+  Adder(tmp, -opnd2, 0, cout);
+  if (cout) SetC();
+  else ClearC();
+  UpdateNZ(tmp);
+}
+
+void ALU::Cmp(Imme IN opnd) {
+  CmpFactory(regfile.a_reg, opnd);
+}
+
+void ALU::Cpx(Imme IN opnd) {
+  CmpFactory(regfile.x_reg, opnd);
+}
+
+void ALU::Cpy(Imme IN opnd) {
+  CmpFactory(regfile.y_reg, opnd);
+}
+
+void ALU::LdFactory(uint8_t IN OUT &opnd1, Imme IN opnd2) {
+  regfile.pc_reg += 2;
+  opnd1 = opnd2;
+  UpdateNZ(regfile.a_reg);
+}
+
+void ALU::Lda(Imme IN opnd) {
+  LdFactory(regfile.a_reg, opnd);
+}
+
+void ALU::Ldx(Imme opnd) {
+  LdFactory(regfile.x_reg, opnd);
+}
+
+void ALU::Ldy(Imme opnd) {
+  LdFactory(regfile.y_reg, opnd);
 }
 
 } // namespace cpu

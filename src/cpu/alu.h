@@ -53,7 +53,19 @@ class ALU {
   void Plp();
   void Adder(uint8_t IN OUT &opnd1, uint8_t IN opnd2,
       uint8_t IN cin, uint8_t OUT &cout);
-  void Adc(Imme oper);
+  void Adc(Imme IN opnd);
+  void Sbc(Imme IN opnd);
+  void And(Imme IN opnd);
+  void Eor(Imme IN opnd);
+  void Ora(Imme IN opnd);
+  void CmpFactory(uint8_t IN opnd1, Imme IN opnd2);
+  void Cmp(Imme IN opnd);
+  void Cpx(Imme IN opnd);
+  void Cpy(Imme IN opnd);
+  void LdFactory(uint8_t IN OUT &opnd1, Imme IN opnd2);
+  void Lda(Imme IN opnd);
+  void Ldx(Imme IN opnd);
+  void Ldy(Imme IN opnd);
 };
 
 }; // namespace cpu
