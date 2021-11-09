@@ -3,7 +3,6 @@
 
 #define READ_BIT(value, n) ((value >> n) & 0x1)
 
-#include "cpu/regfile.h"
 #include "define/type.h"
 #include "mem/mem.h"
 #include <cstdint>
@@ -15,8 +14,26 @@ using mem::MemWrite;
 
 class ALU {
  private:
-  RegFile regfile;
+  struct {
+    uint16_t pc_reg;
+    uint8_t sp_reg;
+    uint8_t a_reg;
+    uint8_t x_reg;
+    uint8_t y_reg;
+    uint8_t p_reg;
+  } regfile;
  public:
+  void reset() {
+    regfile.pc_reg = 0;
+    regfile.sp_reg = 0;
+    regfile.a_reg = 0;
+    regfile.x_reg = 0;
+    regfile.y_reg = 0;
+    regfile.p_reg = 0;
+  }
+  ALU() {
+    reset();
+  }
   void ClearC();
   void ClearZ();
   void ClearI();
