@@ -1,13 +1,18 @@
+#include "define/type.h"
+#include "define/width.h"
 #include "mem/mem.h"
+#include <cstdint>
 
 namespace mem {
 
-void Mem::read(uint16_t ram_addr, uint8_t OUT &ram_data) {
-  ram_data = ram[ram_addr];
+static uint8_t kRam[RAM_SIZE];
+
+void MemRead(uint16_t IN ram_addr, uint8_t OUT &ram_data) {
+  ram_data = kRam[ram_addr];
 }
 
-void Mem::write(uint16_t ram_addr, uint8_t IN &ram_data) {
-  ram[ram_addr] = ram_data;
+void MemWrite(uint16_t IN ram_addr, uint8_t IN ram_data) {
+  kRam[ram_addr] = ram_data;
 }
 
 } // namespace mem

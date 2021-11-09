@@ -10,10 +10,12 @@
 
 namespace cpu {
 
+using mem::MemRead;
+using mem::MemWrite;
+
 class ALU {
  private:
   RegFile regfile;
-  mem::Mem mem;
  public:
   void ClearC();
   void ClearZ();

@@ -143,19 +143,19 @@ void ALU::Txs() {
 }
 
 void ALU::Pha() {
-  mem.write(regfile.sp_reg--, regfile.a_reg);
+  MemWrite(regfile.sp_reg--, regfile.a_reg);
 }
 
 void ALU::Php() {
-  mem.write(regfile.sp_reg--, regfile.p_reg);
+  MemWrite(regfile.sp_reg--, regfile.p_reg);
 }
 
 void ALU::Pla() {
-  mem.read(++regfile.sp_reg, regfile.a_reg);
+  MemRead(++regfile.sp_reg, regfile.a_reg);
 }
 
 void ALU::Plp() {
-  mem.read(++regfile.sp_reg, regfile.p_reg);
+  MemRead(++regfile.sp_reg, regfile.p_reg);
 }
 
 void ALU::Adder(uint8_t IN OUT &opnd1, uint8_t IN opnd2,
