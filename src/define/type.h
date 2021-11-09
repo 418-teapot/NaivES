@@ -1,6 +1,7 @@
 #ifndef DEFINE_TYPE_H_
 #define DEFINE_TYPE_H_
 
+#include <cstddef>
 #include <cstdint>
 
 #define IN
@@ -37,5 +38,11 @@ union IndIdxAddr {
 union IdxIndAddr {
   uint8_t addr;
 };
+
+typedef struct {
+  uint8_t data;
+  uint32_t cycle;
+  size_t byte;
+} MemData;
 
 #endif // DEFINE_TYPE_H_
