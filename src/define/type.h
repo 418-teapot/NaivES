@@ -6,13 +6,36 @@
 #define IN
 #define OUT
 
-typedef uint8_t Imme;
-typedef uint8_t ZeroPageAddr;
-typedef uint8_t IdxZeroPageAddr;
-typedef uint16_t AbsAddr;
-typedef uint16_t IdxAbsAddrX;
-typedef uint16_t IdxAbsAddrY;
-typedef uint8_t IndIdxAddr;
-typedef uint8_t IdxIndAddr;
+union Imme {
+  uint8_t data;
+};
+
+union ZPAddr {
+  uint8_t addr;
+};
+
+union IdxZPAddr {
+  uint8_t addr;
+};
+
+union AbsAddr {
+  uint16_t addr;
+};
+
+union IdxAbsAddrX {
+  uint16_t addr;
+};
+
+union IdxAbsAddrY {
+  uint16_t addr;
+};
+
+union IndIdxAddr {
+  uint8_t addr;
+};
+
+union IdxIndAddr {
+  uint8_t addr;
+};
 
 #endif // DEFINE_TYPE_H_
