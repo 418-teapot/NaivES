@@ -86,7 +86,7 @@ uint8_t ALU::ReadN() {
   return READ_BIT(regfile.p_reg, 7);
 }
 
-void ALU::UpdateNZ(uint8_t value) {
+void ALU::UpdateNZ(IN uint8_t value) {
   if (!value) SetZ();
   else ClearZ();
   if (value & 0x80) SetN();
@@ -158,15 +158,15 @@ void ALU::Plp() {
   MemRead(++regfile.sp_reg, regfile.p_reg);
 }
 
-void ALU::Adder(uint8_t IN OUT &opnd1, uint8_t IN opnd2,
-    uint8_t IN cin, uint8_t OUT &cout) {
+void ALU::Adder(IN OUT uint8_t &opnd1, IN uint8_t opnd2,
+    IN uint8_t cin, OUT uint8_t &cout) {
   uint16_t sum = opnd1 + opnd2 + cin;
   cout = READ_BIT(sum, 8);
   opnd1 = sum & 0xFF;
 }
 
-void ALU::Adc(Imme IN opnd) {
-  regfile.pc_reg += 2;
+void ALU::Adc(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
   uint8_t cout = 0;
   Adder(regfile.a_reg, opnd.data, ReadC(), cout);
   if (cout) SetC();
@@ -174,8 +174,8 @@ void ALU::Adc(Imme IN opnd) {
   UpdateNZ(regfile.a_reg);
 }
 
-void ALU::Sbc(Imme IN opnd) {
-  regfile.pc_reg += 2;
+void ALU::Sbc(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
   uint8_t cout = 0;
   Adder(regfile.a_reg, -opnd.data, -ReadC(), cout);
   if (cout) SetC();
@@ -183,26 +183,26 @@ void ALU::Sbc(Imme IN opnd) {
   UpdateNZ(regfile.a_reg);
 }
 
-void ALU::And(Imme IN opnd) {
-  regfile.pc_reg += 2;
+void ALU::And(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
   regfile.a_reg &= opnd.data;
   UpdateNZ(regfile.a_reg);
 }
 
-void ALU::Eor(Imme IN opnd) {
-  regfile.pc_reg += 2;
+void ALU::Eor(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
   regfile.a_reg ^= opnd.data;
   UpdateNZ(regfile.a_reg);
 }
 
-void ALU::Ora(Imme IN opnd) {
-  regfile.pc_reg += 2;
+void ALU::Ora(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
   regfile.a_reg |= opnd.data;
   UpdateNZ(regfile.a_reg);
 }
 
-void ALU::CmpFactory(uint8_t IN opnd1, Imme IN opnd2) {
-  regfile.pc_reg += 2;
+void ALU::CmpFactory(IN uint8_t opnd1, IN MemData opnd2) {
+  regfile.pc_reg += (uint8_t)opnd2.byte + 1;
   uint8_t cout = 0;
   uint8_t tmp = opnd1;
   Adder(tmp, -opnd2.data, 0, cout);
@@ -211,33 +211,33 @@ void ALU::CmpFactory(uint8_t IN opnd1, Imme IN opnd2) {
   UpdateNZ(tmp);
 }
 
-void ALU::Cmp(Imme IN opnd) {
+void ALU::Cmp(IN MemData opnd) {
   CmpFactory(regfile.a_reg, opnd);
 }
 
-void ALU::Cpx(Imme IN opnd) {
+void ALU::Cpx(IN MemData opnd) {
   CmpFactory(regfile.x_reg, opnd);
 }
 
-void ALU::Cpy(Imme IN opnd) {
+void ALU::Cpy(IN MemData opnd) {
   CmpFactory(regfile.y_reg, opnd);
 }
 
-void ALU::LdFactory(uint8_t IN OUT &opnd1, Imme IN opnd2) {
-  regfile.pc_reg += 2;
+void ALU::LdFactory(IN OUT uint8_t &opnd1, IN MemData opnd2) {
+  regfile.pc_reg += (uint8_t)opnd2.byte + 1;
   opnd1 = opnd2.data;
   UpdateNZ(regfile.a_reg);
 }
 
-void ALU::Lda(Imme IN opnd) {
+void ALU::Lda(IN MemData opnd) {
   LdFactory(regfile.a_reg, opnd);
 }
 
-void ALU::Ldx(Imme opnd) {
+void ALU::Ldx(IN MemData opnd) {
   LdFactory(regfile.x_reg, opnd);
 }
 
-void ALU::Ldy(Imme opnd) {
+void ALU::Ldy(IN MemData opnd) {
   LdFactory(regfile.y_reg, opnd);
 }
 

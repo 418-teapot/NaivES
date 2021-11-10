@@ -55,7 +55,7 @@ class ALU {
   uint8_t ReadB();
   uint8_t ReadV();
   uint8_t ReadN();
-  void UpdateNZ(uint8_t value);
+  void UpdateNZ(IN uint8_t value);
   void Inx();
   void Iny();
   void Dex();
@@ -70,21 +70,21 @@ class ALU {
   void Php();
   void Pla();
   void Plp();
-  void Adder(uint8_t IN OUT &opnd1, uint8_t IN opnd2,
-      uint8_t IN cin, uint8_t OUT &cout);
-  void Adc(Imme IN opnd);
-  void Sbc(Imme IN opnd);
-  void And(Imme IN opnd);
-  void Eor(Imme IN opnd);
-  void Ora(Imme IN opnd);
-  void CmpFactory(uint8_t IN opnd1, Imme IN opnd2);
-  void Cmp(Imme IN opnd);
-  void Cpx(Imme IN opnd);
-  void Cpy(Imme IN opnd);
-  void LdFactory(uint8_t IN OUT &opnd1, Imme IN opnd2);
-  void Lda(Imme IN opnd);
-  void Ldx(Imme IN opnd);
-  void Ldy(Imme IN opnd);
+  void Adder(IN OUT uint8_t &opnd1, IN uint8_t opnd2,
+      IN uint8_t cin, OUT uint8_t &cout);
+  void Adc(IN MemData opnd);
+  void Sbc(IN MemData opnd);
+  void And(IN MemData opnd);
+  void Eor(IN MemData opnd);
+  void Ora(IN MemData opnd);
+  void CmpFactory(IN uint8_t opnd1, IN MemData opnd2);
+  void Cmp(IN MemData opnd);
+  void Cpx(IN MemData opnd);
+  void Cpy(IN MemData opnd);
+  void LdFactory(IN OUT uint8_t &opnd1, IN MemData opnd2);
+  void Lda(IN MemData opnd);
+  void Ldx(IN MemData opnd);
+  void Ldy(IN MemData opnd);
 };
 
 }; // namespace cpu
