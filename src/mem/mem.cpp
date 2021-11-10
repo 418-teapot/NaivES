@@ -4,11 +4,11 @@ namespace mem {
 
 static uint8_t kRam[RAM_SIZE];
 
-void MemRead(uint16_t IN ram_addr, uint8_t OUT &ram_data) {
+void MemRead(IN uint16_t ram_addr, OUT uint8_t &ram_data) {
   ram_data = kRam[ram_addr];
 }
 
-void MemWrite(uint16_t IN ram_addr, uint8_t IN ram_data) {
+void MemWrite(IN uint16_t ram_addr, IN uint8_t ram_data) {
   kRam[ram_addr] = ram_data;
 }
 

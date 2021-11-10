@@ -7,8 +7,8 @@
 
 namespace mem {
 
-void MemRead(uint16_t IN ram_addr, uint8_t OUT &ram_data);
-void MemWrite(uint16_t IN ram_addr, uint8_t IN ram_data);
+void MemRead(IN uint16_t ram_addr, OUT uint8_t &ram_data);
+void MemWrite(IN uint16_t ram_addr, IN uint8_t ram_data);
 
 MemData GetData(IN Imme opnd);
 MemData GetData(IN ZPAddr opnd);
