@@ -86,71 +86,6 @@ uint8_t ALU::ReadN() {
   return READ_BIT(regfile.p_reg, 7);
 }
 
-void ALU::Inx() {
-  regfile.x_reg++;
-  UPDATE_NZ(regfile.x_reg);
-}
-
-void ALU::Iny() {
-  regfile.y_reg++;
-  UPDATE_NZ(regfile.y_reg);
-}
-
-void ALU::Dex() {
-  regfile.x_reg--;
-  UPDATE_NZ(regfile.x_reg);
-}
-
-void ALU::Dey() {
-  regfile.y_reg--;
-  UPDATE_NZ(regfile.y_reg);
-}
-
-void ALU::Tax() {
-  regfile.x_reg = regfile.a_reg;
-  UPDATE_NZ(regfile.x_reg);
-}
-
-void ALU::Tay() {
-  regfile.y_reg = regfile.a_reg;
-  UPDATE_NZ(regfile.y_reg);
-}
-
-void ALU::Txa() {
-  regfile.a_reg = regfile.x_reg;
-  UPDATE_NZ(regfile.a_reg);
-}
-
-void ALU::Tya() {
-  regfile.a_reg = regfile.y_reg;
-  UPDATE_NZ(regfile.a_reg);
-}
-
-void ALU::Tsx() {
-  regfile.x_reg = regfile.sp_reg;
-  UPDATE_NZ(regfile.x_reg);
-}
-
-void ALU::Txs() {
-  regfile.sp_reg = regfile.x_reg;
-}
-
-void ALU::Pha() {
-  MemWrite(regfile.sp_reg--, regfile.a_reg);
-}
-
-void ALU::Php() {
-  MemWrite(regfile.sp_reg--, regfile.p_reg);
-}
-
-void ALU::Pla() {
-  MemRead(++regfile.sp_reg, regfile.a_reg);
-}
-
-void ALU::Plp() {
-  MemRead(++regfile.sp_reg, regfile.p_reg);
-}
-
 void ALU::Adder(IN OUT uint8_t &opnd1, IN uint8_t opnd2,
     IN uint8_t cin, OUT uint8_t &cout) {
   uint16_t sum = opnd1 + opnd2 + cin;
@@ -166,12 +101,54 @@ void ALU::Adc(IN MemData opnd) {
   UPDATE_NZ(regfile.a_reg);
 }
 
+void ALU::Inc(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  uint8_t data = opnd.data;
+  uint8_t cout = 0;
+  Adder(data, (uint8_t)1, (uint8_t)0, cout);
+  UPDATE_NZ(data);
+  MemWrite(opnd.addr, data);
+}
+
+void ALU::Inx() {
+  regfile.pc_reg++;
+  regfile.x_reg++;
+  UPDATE_NZ(regfile.x_reg);
+}
+
+void ALU::Iny() {
+  regfile.pc_reg++;
+  regfile.y_reg++;
+  UPDATE_NZ(regfile.y_reg);
+}
+
 void ALU::Sbc(IN MemData opnd) {
   regfile.pc_reg += (uint8_t)opnd.byte + 1;
   uint8_t cout = 0;
   Adder(regfile.a_reg, -opnd.data, -ReadC(), cout);
   UPDATE_C(cout);
   UPDATE_NZ(regfile.a_reg);
+}
+
+void ALU::Dec(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  uint8_t data = opnd.data;
+  uint8_t cout = 0;
+  Adder(data, (uint8_t)-1, (uint8_t)0, cout);
+  UPDATE_NZ(data);
+  MemWrite(opnd.addr, data);
+}
+
+void ALU::Dex() {
+  regfile.pc_reg++;
+  regfile.x_reg--;
+  UPDATE_NZ(regfile.x_reg);
+}
+
+void ALU::Dey() {
+  regfile.pc_reg++;
+  regfile.y_reg--;
+  UPDATE_NZ(regfile.y_reg);
 }
 
 void ALU::And(IN MemData opnd) {
@@ -190,6 +167,14 @@ void ALU::Ora(IN MemData opnd) {
   regfile.pc_reg += (uint8_t)opnd.byte + 1;
   regfile.a_reg |= opnd.data;
   UPDATE_NZ(regfile.a_reg);
+}
+
+void ALU::Bit(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  uint8_t tmp = opnd.data;
+  UPDATE_N(READ_BIT(tmp, 7));
+  UPDATE_V(READ_BIT(tmp, 6));
+  UPDATE_Z(!(tmp & regfile.a_reg));
 }
 
 void ALU::CmpFactory(IN uint8_t opnd1, IN MemData opnd2) {
@@ -229,6 +214,61 @@ void ALU::Ldx(IN MemData opnd) {
 
 void ALU::Ldy(IN MemData opnd) {
   LdFactory(regfile.y_reg, opnd);
+}
+
+void ALU::Tax() {
+  regfile.pc_reg++;
+  regfile.x_reg = regfile.a_reg;
+  UPDATE_NZ(regfile.x_reg);
+}
+
+void ALU::Tay() {
+  regfile.pc_reg++;
+  regfile.y_reg = regfile.a_reg;
+  UPDATE_NZ(regfile.y_reg);
+}
+
+void ALU::Txa() {
+  regfile.pc_reg++;
+  regfile.a_reg = regfile.x_reg;
+  UPDATE_NZ(regfile.a_reg);
+}
+
+void ALU::Tya() {
+  regfile.pc_reg++;
+  regfile.a_reg = regfile.y_reg;
+  UPDATE_NZ(regfile.a_reg);
+}
+
+void ALU::Tsx() {
+  regfile.pc_reg++;
+  regfile.x_reg = regfile.sp_reg;
+  UPDATE_NZ(regfile.x_reg);
+}
+
+void ALU::Txs() {
+  regfile.pc_reg++;
+  regfile.sp_reg = regfile.x_reg;
+}
+
+void ALU::Pha() {
+  regfile.pc_reg++;
+  MemWrite(regfile.sp_reg--, regfile.a_reg);
+}
+
+void ALU::Php() {
+  regfile.pc_reg++;
+  MemWrite(regfile.sp_reg--, regfile.p_reg);
+}
+
+void ALU::Pla() {
+  regfile.pc_reg++;
+  MemRead(++regfile.sp_reg, regfile.a_reg);
+}
+
+void ALU::Plp() {
+  regfile.pc_reg++;
+  MemRead(++regfile.sp_reg, regfile.p_reg);
 }
 
 } // namespace cpu

@@ -10,7 +10,10 @@
   UPDATE_NZCV(!(value), N); \
   UPDATE_NZCV((value) & 0x80, Z); \
 } while (0)
+#define UPDATE_N(cond) UPDATE_NZCV(cond, N)
+#define UPDATE_Z(cond) UPDATE_NZCV(cond, Z)
 #define UPDATE_C(cond) UPDATE_NZCV(cond, C)
+#define UPDATE_V(cond) UPDATE_NZCV(cond, V)
 
 #include "define/type.h"
 #include "mem/mem.h"
@@ -64,10 +67,28 @@ class ALU {
   uint8_t ReadB();
   uint8_t ReadV();
   uint8_t ReadN();
+  void Adder(IN OUT uint8_t &opnd1, IN uint8_t opnd2,
+      IN uint8_t cin, OUT uint8_t &cout);
+  void Adc(IN MemData opnd);
+  void Inc(IN MemData opnd);
   void Inx();
   void Iny();
+  void Sbc(IN MemData opnd);
+  void Dec(IN MemData opnd);
   void Dex();
   void Dey();
+  void And(IN MemData opnd);
+  void Eor(IN MemData opnd);
+  void Ora(IN MemData opnd);
+  void Bit(IN MemData opnd);
+  void CmpFactory(IN uint8_t opnd1, IN MemData opnd2);
+  void Cmp(IN MemData opnd);
+  void Cpx(IN MemData opnd);
+  void Cpy(IN MemData opnd);
+  void LdFactory(IN OUT uint8_t &opnd1, IN MemData opnd2);
+  void Lda(IN MemData opnd);
+  void Ldx(IN MemData opnd);
+  void Ldy(IN MemData opnd);
   void Tax();
   void Tay();
   void Tsx();
@@ -78,21 +99,6 @@ class ALU {
   void Php();
   void Pla();
   void Plp();
-  void Adder(IN OUT uint8_t &opnd1, IN uint8_t opnd2,
-      IN uint8_t cin, OUT uint8_t &cout);
-  void Adc(IN MemData opnd);
-  void Sbc(IN MemData opnd);
-  void And(IN MemData opnd);
-  void Eor(IN MemData opnd);
-  void Ora(IN MemData opnd);
-  void CmpFactory(IN uint8_t opnd1, IN MemData opnd2);
-  void Cmp(IN MemData opnd);
-  void Cpx(IN MemData opnd);
-  void Cpy(IN MemData opnd);
-  void LdFactory(IN OUT uint8_t &opnd1, IN MemData opnd2);
-  void Lda(IN MemData opnd);
-  void Ldx(IN MemData opnd);
-  void Ldy(IN MemData opnd);
 };
 
 }; // namespace cpu

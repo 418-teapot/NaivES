@@ -41,6 +41,7 @@ union IdxIndAddr {
 
 typedef struct {
   uint8_t data;
+  uint16_t addr; // physical address
   uint32_t cycle;
   size_t byte;
 } MemData;
