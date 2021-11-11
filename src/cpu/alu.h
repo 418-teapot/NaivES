@@ -81,6 +81,14 @@ class ALU {
   void Eor(IN MemData opnd);
   void Ora(IN MemData opnd);
   void Bit(IN MemData opnd);
+  void Asl();
+  void Asl(IN MemData opnd);
+  void Lsr();
+  void Lsr(IN MemData opnd);
+  void Rol();
+  void Rol(IN MemData opnd);
+  void Ror();
+  void Ror(IN MemData opnd);
   void CmpFactory(IN uint8_t opnd1, IN MemData opnd2);
   void Cmp(IN MemData opnd);
   void Cpx(IN MemData opnd);

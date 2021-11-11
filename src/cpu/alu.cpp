@@ -177,6 +177,71 @@ void ALU::Bit(IN MemData opnd) {
   UPDATE_Z(!(tmp & regfile.a_reg));
 }
 
+void ALU::Asl() {
+  regfile.pc_reg++;
+  uint16_t tmp = (uint16_t)regfile.a_reg << 1;
+  regfile.a_reg = tmp & 0xFF;
+  UPDATE_NZ(regfile.a_reg);
+  UPDATE_C(READ_BIT(tmp, 8));
+}
+
+void ALU::Asl(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  uint16_t tmp = (uint16_t)opnd.data << 1;
+  uint8_t data = tmp & 0xFF;
+  MemWrite(opnd.addr, data);
+  UPDATE_NZ(data);
+  UPDATE_C(READ_BIT(tmp, 8));
+}
+
+void ALU::Lsr() {
+  regfile.pc_reg++;
+  UPDATE_C(READ_BIT(regfile.a_reg, 0));
+  regfile.a_reg >>= 1;
+  UPDATE_NZ(regfile.a_reg);
+}
+
+void ALU::Lsr(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  UPDATE_C(READ_BIT(opnd.data, 0));
+  uint8_t tmp = opnd.data >> 1;
+  MemWrite(opnd.addr, tmp);
+  UPDATE_NZ(tmp);
+}
+
+void ALU::Rol() {
+  regfile.pc_reg++;
+  uint16_t tmp = ((uint16_t)regfile.a_reg << 1) + ReadC();
+  UPDATE_C(READ_BIT(tmp, 8));
+  regfile.a_reg = tmp & 0xFF;
+  UPDATE_NZ(regfile.a_reg);
+}
+
+void ALU::Rol(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  uint16_t tmp = ((uint16_t)opnd.data << 1) + ReadC();
+  UPDATE_C(READ_BIT(tmp, 8));
+  uint8_t data = tmp & 0xFF;
+  MemWrite(opnd.addr, data);
+  UPDATE_NZ(data);
+}
+
+void ALU::Ror() {
+  regfile.pc_reg++;
+  uint8_t tmp = (regfile.a_reg >> 1) + (ReadC() << 7);
+  UPDATE_C(READ_BIT(regfile.a_reg, 0));
+  regfile.a_reg = tmp;
+  UPDATE_NZ(regfile.a_reg);
+}
+
+void ALU::Ror(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  uint8_t tmp = (opnd.data >> 1) + (ReadC() << 7);
+  UPDATE_C(READ_BIT(opnd.data, 0));
+  MemWrite(opnd.addr, tmp);
+  UPDATE_NZ(tmp);
+}
+
 void ALU::CmpFactory(IN uint8_t opnd1, IN MemData opnd2) {
   regfile.pc_reg += (uint8_t)opnd2.byte + 1;
   uint8_t cout = 0;
