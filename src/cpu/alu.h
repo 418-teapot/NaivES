@@ -2,6 +2,15 @@
 #define CPU_ALU_H_
 
 #define READ_BIT(value, n) ((value >> n) & 0x1)
+#define UPDATE_NZCV(cond, nzcv) do { \
+  if (cond) Set##nzcv(); \
+  else Clear##nzcv(); \
+} while (0)
+#define UPDATE_NZ(value) do { \
+  UPDATE_NZCV(!(value), N); \
+  UPDATE_NZCV((value) & 0x80, Z); \
+} while (0)
+#define UPDATE_C(cond) UPDATE_NZCV(cond, C)
 
 #include "define/type.h"
 #include "mem/mem.h"
@@ -55,7 +64,6 @@ class ALU {
   uint8_t ReadB();
   uint8_t ReadV();
   uint8_t ReadN();
-  void UpdateNZ(IN uint8_t value);
   void Inx();
   void Iny();
   void Dex();
