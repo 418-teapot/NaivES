@@ -242,6 +242,46 @@ void ALU::Ror(IN MemData opnd) {
   UPDATE_NZ(tmp);
 }
 
+void ALU::Bcc(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  if (ReadC() == 0) regfile.pc_reg += (uint8_t)opnd.addr;
+}
+
+void ALU::Bcs(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  if (ReadC() == 1) regfile.pc_reg += (uint8_t)opnd.addr;
+}
+
+void ALU::Beq(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  if (ReadZ() == 1) regfile.pc_reg += (uint8_t)opnd.addr;
+}
+
+void ALU::Bmi(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  if (ReadN() == 1) regfile.pc_reg += (uint8_t)opnd.addr;
+}
+
+void ALU::Bne(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  if (ReadZ() == 0) regfile.pc_reg += (uint8_t)opnd.addr;
+}
+
+void ALU::Bpl(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  if (ReadN() == 0) regfile.pc_reg += (uint8_t)opnd.addr;
+}
+
+void ALU::Bvc(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  if (ReadV() == 0) regfile.pc_reg += (uint8_t)opnd.addr;
+}
+
+void ALU::Bvs(IN MemData opnd) {
+  regfile.pc_reg += (uint8_t)opnd.byte + 1;
+  if (ReadV() == 1) regfile.pc_reg += (uint8_t)opnd.addr;
+}
+
 void ALU::CmpFactory(IN uint8_t opnd1, IN MemData opnd2) {
   regfile.pc_reg += (uint8_t)opnd2.byte + 1;
   uint8_t cout = 0;

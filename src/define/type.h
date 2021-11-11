@@ -19,6 +19,10 @@ union IdxZPAddr {
   uint8_t addr;
 };
 
+union RelAddr {
+  uint8_t addr;
+};
+
 union AbsAddr {
   uint16_t addr;
 };
@@ -41,7 +45,8 @@ union IdxIndAddr {
 
 typedef struct {
   uint8_t data;
-  uint16_t addr; // physical address
+  // When branch inst, addr is relative address, otherwise, physical address.
+  uint16_t addr;
   uint32_t cycle;
   size_t byte;
 } MemData;

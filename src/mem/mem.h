@@ -12,6 +12,7 @@ void MemWrite(IN uint16_t ram_addr, IN uint8_t ram_data);
 
 MemData GetData(IN Imme opnd);
 MemData GetData(IN ZPAddr opnd);
+MemData GetData(IN RelAddr opnd);
 
 } // namespace mem
 

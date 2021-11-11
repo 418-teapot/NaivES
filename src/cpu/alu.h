@@ -89,6 +89,14 @@ class ALU {
   void Rol(IN MemData opnd);
   void Ror();
   void Ror(IN MemData opnd);
+  void Bcc(IN MemData opnd);
+  void Bcs(IN MemData opnd);
+  void Beq(IN MemData opnd);
+  void Bmi(IN MemData opnd);
+  void Bne(IN MemData opnd);
+  void Bpl(IN MemData opnd);
+  void Bvc(IN MemData opnd);
+  void Bvs(IN MemData opnd);
   void CmpFactory(IN uint8_t opnd1, IN MemData opnd2);
   void Cmp(IN MemData opnd);
   void Cpx(IN MemData opnd);
