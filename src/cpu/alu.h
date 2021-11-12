@@ -97,6 +97,11 @@ class ALU {
   void Bpl(IN MemData opnd);
   void Bvc(IN MemData opnd);
   void Bvs(IN MemData opnd);
+  void Brk();
+  void Jmp(IN MemData opnd);
+  void Jsr(IN MemData opnd);
+  void Rti();
+  void Rts();
   void CmpFactory(IN uint8_t opnd1, IN MemData opnd2);
   void Cmp(IN MemData opnd);
   void Cpx(IN MemData opnd);
