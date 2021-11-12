@@ -369,6 +369,7 @@ void ALU::Php() {
 void ALU::Pla() {
   regfile.pc_reg++;
   MemRead(++regfile.sp_reg, regfile.a_reg);
+  UPDATE_NZ(regfile.a_reg);
 }
 
 void ALU::Plp() {
