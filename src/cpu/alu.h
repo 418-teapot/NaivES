@@ -67,6 +67,8 @@ class ALU {
   uint8_t ReadB();
   uint8_t ReadV();
   uint8_t ReadN();
+  void PushStack(IN uint8_t data);
+  void PopStack(OUT uint8_t &data);
   void Adder(IN OUT uint8_t &opnd1, IN uint8_t opnd2,
       IN uint8_t cin, OUT uint8_t &cout);
   void Adc(IN MemData opnd);

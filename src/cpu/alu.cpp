@@ -86,6 +86,14 @@ uint8_t ALU::ReadN() {
   return READ_BIT(regfile.p_reg, 7);
 }
 
+void ALU::PushStack(IN uint8_t data) {
+  MemWrite(regfile.sp_reg--, data);
+}
+
+void ALU::PopStack(OUT uint8_t &data) {
+  MemRead(++regfile.sp_reg, data);
+}
+
 void ALU::Adder(IN OUT uint8_t &opnd1, IN uint8_t opnd2,
     IN uint8_t cin, OUT uint8_t &cout) {
   uint16_t sum = opnd1 + opnd2 + cin;
@@ -358,23 +366,23 @@ void ALU::Txs() {
 
 void ALU::Pha() {
   regfile.pc_reg++;
-  MemWrite(regfile.sp_reg--, regfile.a_reg);
+  PushStack(regfile.a_reg);
 }
 
 void ALU::Php() {
   regfile.pc_reg++;
-  MemWrite(regfile.sp_reg--, regfile.p_reg);
+  PushStack(regfile.p_reg);
 }
 
 void ALU::Pla() {
   regfile.pc_reg++;
-  MemRead(++regfile.sp_reg, regfile.a_reg);
+  PopStack(regfile.a_reg);
   UPDATE_NZ(regfile.a_reg);
 }
 
 void ALU::Plp() {
   regfile.pc_reg++;
-  MemRead(++regfile.sp_reg, regfile.p_reg);
+  PopStack(regfile.p_reg);
 }
 
 } // namespace cpu
