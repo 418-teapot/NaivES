@@ -1,0 +1,8 @@
+#ifndef DEFINE_ADDR_H_
+#define DEFINE_ADDR_H_
+
+#define NMI_VECTOR 0xFFFA
+#define RESET_VECTOR 0xFFFC
+#define IRQ_VECTOR 0xFFFE
+
+#endif // DEFINE_ADDR_H_

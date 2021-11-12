@@ -1,4 +1,5 @@
 #include "cpu/alu.h"
+#include "define/addr.h"
 
 namespace cpu {
 
@@ -288,6 +289,19 @@ void ALU::Bvc(IN MemData opnd) {
 void ALU::Bvs(IN MemData opnd) {
   regfile.pc_reg += (uint8_t)opnd.byte + 1;
   if (ReadV() == 1) regfile.pc_reg += (uint8_t)opnd.addr;
+}
+
+void ALU::Brk() {
+  regfile.pc_reg++;
+  PushStack((regfile.pc_reg >> 8) & 0xFF);
+  PushStack(regfile.pc_reg & 0xFF);
+  PushStack(regfile.p_reg);
+  SetI();
+  uint8_t pc_low = 0;
+  uint8_t pc_high = 0;
+  MemRead(IRQ_VECTOR, pc_low);
+  MemRead(IRQ_VECTOR + 1, pc_high);
+  regfile.pc_reg = (uint16_t)pc_high << 8 | (uint16_t)pc_low;
 }
 
 void ALU::CmpFactory(IN uint8_t opnd1, IN MemData opnd2) {
