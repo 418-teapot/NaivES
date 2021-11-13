@@ -304,6 +304,34 @@ void ALU::Brk() {
   regfile.pc_reg = (uint16_t)pc_high << 8 | (uint16_t)pc_low;
 }
 
+void ALU::Jmp(IN MemData opnd) {
+  regfile.pc_reg = opnd.addr;
+}
+
+void ALU::Jsr(IN MemData opnd) {
+  PushStack((regfile.pc_reg + 2) >> 8);
+  PushStack((regfile.pc_reg + 2) & 0xFFFF);
+  regfile.pc_reg = opnd.addr;
+}
+
+void ALU::Rti() {
+  PopStack(regfile.p_reg);
+  uint8_t pc_high = 0;
+  uint8_t pc_low = 0;
+  PopStack(pc_low);
+  PopStack(pc_high);
+  regfile.pc_reg = ((uint16_t)pc_high << 8) + (uint16_t)pc_low;
+}
+
+void ALU::Rts() {
+  uint8_t pc_high = 0;
+  uint8_t pc_low = 0;
+  PopStack(pc_low);
+  PopStack(pc_high);
+  regfile.pc_reg = ((uint16_t)pc_high << 8) + (uint16_t)pc_low;
+  regfile.pc_reg++;
+}
+
 void ALU::CmpFactory(IN uint8_t opnd1, IN MemData opnd2) {
   regfile.pc_reg += (uint8_t)opnd2.byte + 1;
   uint8_t cout = 0;
