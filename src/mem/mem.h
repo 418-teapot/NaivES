@@ -1,9 +1,9 @@
-#ifndef MEM_RAM_H_
-#define MEM_RAM_H_
+#ifndef MEM_MEM_H_
+#define MEM_MEM_H_
 
+#include <cstdint>
 #include "define/type.h"
 #include "define/width.h"
-#include <cstdint>
 
 namespace mem {
 
@@ -16,4 +16,4 @@ MemData GetData(IN RelAddr opnd);
 
 } // namespace mem
 
-#endif // MEM_RAM_H_
+#endif // MEM_MEM_H_

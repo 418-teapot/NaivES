@@ -15,9 +15,9 @@
 #define UPDATE_C(cond) UPDATE_NZCV(cond, C)
 #define UPDATE_V(cond) UPDATE_NZCV(cond, V)
 
+#include <cstdint>
 #include "define/type.h"
 #include "mem/mem.h"
-#include <cstdint>
 
 namespace cpu {
 
