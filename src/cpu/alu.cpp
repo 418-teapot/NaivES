@@ -88,11 +88,13 @@ uint8_t ALU::ReadN() {
 }
 
 void ALU::PushStack(IN uint8_t data) {
-  MemWrite(regfile.sp_reg--, data);
+  MemWrite(0x100 | regfile.sp_reg, data);
+  regfile.sp_reg--;
 }
 
 void ALU::PopStack(OUT uint8_t &data) {
-  MemRead(++regfile.sp_reg, data);
+  regfile.sp_reg++;
+  MemRead(0x100 | regfile.sp_reg, data);
 }
 
 void ALU::Adder(IN OUT uint8_t &opnd1, IN uint8_t opnd2,
