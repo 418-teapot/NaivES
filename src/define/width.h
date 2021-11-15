@@ -1,6 +1,12 @@
 #ifndef DEFINE_WIDTH_H_
 #define DEFINE_WIDTH_H_
 
-#define RAM_SIZE 65536
+#define MEM_SIZE 65536
+#define TOTAL_RAM_SIZE 0x2000
+#define ZERO_PAGE_SIZE 0x100
+#define STACK_SIZE 0x100
+#define RAM_SIZE 0x600
+
+#define RAM_MASK 0x7FF
 
 #endif // DEFINE_WIDTH_H_

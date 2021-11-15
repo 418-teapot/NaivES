@@ -1,15 +1,22 @@
 #include "mem/mem.h"
+#include "define/width.h"
 
 namespace mem {
 
-static uint8_t kRam[RAM_SIZE];
+static uint8_t kRam[MEM_SIZE];
 
 void MemRead(IN uint16_t ram_addr, OUT uint8_t &ram_data) {
-  ram_data = kRam[ram_addr];
+  if (ram_addr < TOTAL_RAM_SIZE) {
+    ram_data = kRam[ram_addr & RAM_MASK];
+    return;
+  }
 }
 
 void MemWrite(IN uint16_t ram_addr, IN uint8_t ram_data) {
-  kRam[ram_addr] = ram_data;
+  if (ram_addr < TOTAL_RAM_SIZE) {
+    kRam[ram_addr & RAM_MASK] = ram_data;
+    return;
+  }
 }
 
 MemData GetData(IN Imme opnd) {
